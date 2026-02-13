@@ -9,17 +9,24 @@ public class Main {
         Thread mainThread = Thread.currentThread();
         Thread t = new Thread(() -> {
             for(int i=0;i < 10; i++) {
-                System.out.println("main: "+" "+mainThread.getState()+" t: "+Thread.currentThread().getState());
+                System.out.println("priority: "+Thread.currentThread().getPriority()+" t: "+Thread.currentThread().getState());
+                Thread temp = new Thread(() -> {
+                    System.out.println(Thread.currentThread().isDaemon());
+                });
+
+                temp.start();
                 try {
                     sleep(500);
                 } catch (InterruptedException e) {
                 }
             }
         });
-
+        t.setPriority(7);
+        t.setDaemon(true);
         t.start();
+
         t.join();
-        System.out.println("main: "+mainThread.getState()+" t:"+t.getState());
+//        System.out.println("priority: "+mainThread.getPriority());
 
     }
 }
