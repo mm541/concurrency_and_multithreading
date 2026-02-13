@@ -4,18 +4,14 @@ import jdk.jfr.Threshold;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main() {
-        Thread.setDefaultUncaughtExceptionHandler((thread, ex)-> {
-            System.out.println(ex.getMessage());
+        Thread t = new Thread (() -> {
+            for(int i=0; i<1000000 ; i++);
         });
-       Thread t1 = new Thread(() -> {
-           System.out.println(Thread.currentThread().getName());
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {}
-            throw new RuntimeException("Something went wrong");
-       });
-        t1.start();
-        System.out.println(10/0);
-        System.out.println(Thread.currentThread().getName());
+        System.out . println( t . getState () );
+        t.start();
+        while(t.getState() != Thread.State.TERMINATED) {
+            System.out.println(t.getState());
+        }
+
     }
 }
