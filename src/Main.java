@@ -5,28 +5,19 @@ import static java.lang.Thread.sleep;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+    static int count = 0;
     public static void main() throws InterruptedException {
-        Thread mainThread = Thread.currentThread();
-        Thread t = new Thread(() -> {
-            for(int i=0;i < 10; i++) {
-                System.out.println("priority: "+Thread.currentThread().getPriority()+" t: "+Thread.currentThread().getState());
-                Thread temp = new Thread(() -> {
-                    System.out.println(Thread.currentThread().isDaemon());
-                });
 
-                temp.start();
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {
-                }
-            }
-        });
-        t.setPriority(7);
-        t.setDaemon(true);
-        t.start();
-
-        t.join();
-//        System.out.println("priority: "+mainThread.getPriority());
-
+        Thread t1 = new Thread(() -> {
+            for(int i=0;i < 100000; i++) count++;
+        }, "t1");
+        Thread t2 = new Thread(() -> {
+            for(int i=0;i < 100000; i++) count++;
+        },"t2");
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+        System.out.println(count);
     }
 }
